@@ -2,7 +2,7 @@
 #
 #
 # Project name: OpenVAS to Report: A tool to convert OpenVAS XML reports into Excel files.
-# Project URL: https://github.com/TheGroundZero/openvasreporting
+# Project URL: https://github.com/groupecnpp/OpenvasReporting
 #
 # Copyright
 # This project is based on OpenVAS2Report (https://github.com/cr0hn/openvas_to_report) (c) 2015, cr0hn<-AT->cr0hn.com
@@ -34,6 +34,6 @@
 # This file exists only so that I can debug using Wings. I don't know why (@dudacgf)
 #
 
-__author__ = 'TheGroundZero (https://github.com/TheGroundZero)'
+__author__ = 'CNPP (https://github.com/groupecnpp)'
 __maintainer__ = 'LaCapitainerie'
 __package__ = str("openvasreporting")

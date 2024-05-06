@@ -1,15 +1,11 @@
-# OpenVAS Reporting:  
+# OpenVAS Reporting:
 
 [![GitHub version](https://badge.fury.io/gh/TheGroundZero%2Fopenvasreporting.svg)](https://badge.fury.io/gh/TheGroundZero%2Fopenvasreporting)
-[![License](https://img.shields.io/github/license/TheGroundZero/openvasreporting.svg)](https://github.com/TheGroundZero/openvasreporting/blob/master/LICENSE)
 [![Docs](https://readthedocs.org/projects/openvas-reporting/badge/?version=latest&style=flat)](https://openvas-reporting.sequr.be)
 [![PyPI - Version](https://img.shields.io/pypi/v/OpenVAS-Reporting.svg)](https://pypi.org/project/OpenVAS-Reporting/)
 [![PyPI - Format](https://img.shields.io/pypi/format/OpenVAS-Reporting.svg)](https://pypi.org/project/OpenVAS-Reporting/)  
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/TheGroundZero/openvasreporting.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/TheGroundZero/openvasreporting/alerts/)
-[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/TheGroundZero/openvasreporting.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/TheGroundZero/openvasreporting/context:python)
 [![Known Vulnerabilities](https://snyk.io/test/github/TheGroundZero/openvasreporting/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/TheGroundZero/openvasreporting?targetFile=requirements.txt)
 [![codecov](https://codecov.io/gh/TheGroundZero/openvasreporting/branch/master/graph/badge.svg)](https://codecov.io/gh/TheGroundZero/openvasreporting)
-[![Requirements Status](https://requires.io/github/TheGroundZero/openvasreporting/requirements.svg?branch=master)](https://requires.io/github/TheGroundZero/openvasreporting/requirements/?branch=master)
 
 A tool to convert [OpenVAS](http://www.openvas.org/) XML into reports.
 
@@ -17,29 +13,33 @@ A tool to convert [OpenVAS](http://www.openvas.org/) XML into reports.
 
 *Read the full documentation at [https://openvas-reporting.sequr.be](https://openvas-reporting.sequr.be)*
 
-# LOOKING FOR MAINTAINERS
+## MAINTAINERS
 
-**THIS PROJECT IS NO LONGER ACTIVELY MAINTAINED!**
+**This project si now maintained by CNPP!**
 
-**PULL REQUESTS FOR MINOR CHANGES MAY STILL BE ACCEPTED.  
-CHANGES IN OPENVAS MAY (and likely will) BREAK THIS TOOL. I WILL NOT PROVIDE SUPPORT FOR THAT.**
+Active developper : **LaCapitainerie**
+
+Forked From : **TheGroundZero**
+
+Original Author : **Cr0hn**
 
 ---
 
-I forked [OpenVAS2Report](https://github.com/cr0hn/openvas_to_report) since it didn't manage to convert all reports I threw at it
-and because I wanted to learn how to use Python for working with XML and creating Excel files.  
+### This one is a fork from [OpenVAS2Report](https://github.com/TheGroundZero/openvasreporting) 
+
+I forked since it was not maintained anymore, fixed all bug and not it is actively maintenained and in developement
 Also, OpenVAS mixes their own threat levels with the [CVSS](https://www.first.org/cvss/) scoring, the latter of which I prefer to use in my reports.
 
 Looking for a fix and providing an actual fix through a pull request would have been too much work,
-so I chose to fork the repo and try my own thing.  
-I reorganised some of the files, removed some functionality and added some extra, and rewrote some functions.
+so I chose to fork the repo and dev my own thing.
+I reorganised the code, how it work, added functionality and rewrote some functions
 
-At this moment in time, the script only output .xlsx documents in one format, this may (not) change in the future.
+At this moment in time, the script output `.xlsx`, `.docx` and `.csv` documents in one format, more formats are not planned at the moment.
 
 
 ## Requirements
 
- - [Python](https://www.python.org/) version 3
+ - [Python 3.X](https://www.python.org/)
  - [XlsxWriter](https://xlsxwriter.readthedocs.io/)
  - [Python-docx](https://python-docx.readthedocs.io)
 
@@ -149,12 +149,3 @@ The final report (in Excel format) will then look something like this:
 ![Report example screenshot - Vuln desc](docs/_static/img/screenshot-report2.png?raw=true)
 
 Worksheets are sorted according to CVSS score and are colored according to the vulnerability level.
-
-## Ideas
-
-Some of the ideas I still have for future functionality:
-
- - list vulnerabilities per host ==DONE==
- - filter by host (scope/exclude) as in OpenVAS2Report ==DONE==
- - select threat levels individually (e.g. none and low; but not med, high and crit) ==DONE==
- - import other formats (not only XML), e.g. CSV as suggested in [this issue](https://github.com/TheGroundZero/openvasreporting_server/issues/3) ==DONE==

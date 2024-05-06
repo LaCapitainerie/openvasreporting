@@ -21,8 +21,8 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'OpenVAS Reporting'
-copyright = '2018, TheGroundZero (@DezeStijn)'
-author = 'TheGroundZero (@DezeStijn)'
+copyright = '2024, CNPP (@LaCapitainerie)'
+author = 'CNPP (@LaCapitainerie)'
 
 # The short X.Y version
 version = '1.6'
