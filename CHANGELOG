@@ -12,14 +12,12 @@ Changelog
        - Username
        - Filtering option description
        - Typo from all function that were not typed
+       - Threat level detection
+       - Unit test for Threat level
 
 1.7.0
 
-- Features:
-       - Add Option to choose threat level
-- Fixes:
-       - Small bugfixes and code refactoring
-       - Added Unit tests
+- Add Option to choose threat level
 
 1.6.0
 

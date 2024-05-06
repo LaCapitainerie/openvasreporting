@@ -118,10 +118,10 @@ The `-c` option will read a .yml file with all configurations.
 If the `-c` option is used, any other options but input and output filenames are ignored.
 There is a sample of a configuration file in the `docs/` folder
 
-The -D option will read a string of Threat types.
-**c**ritical, **h**igh, **m**edium, **l**ow, **n**one
+The `-D` option will read a string of Threat types.
+**C**ritical, **H**igh, **M**edium, **L**ow, **N**one
 Can be accumulate like this: `-D chmln`
-Any letter not recognize will just be ignored
+Any letter not recognized will just be ignored
 
 ## Examples
 

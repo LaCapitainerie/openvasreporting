@@ -158,7 +158,11 @@ class Config(object):
         else:
             self.cve_excluded = None
 
-        self.threat_excluded = [*threat_excluded]
+        for threat in threat_excluded:
+            if threat not in Config.levels().keys():
+                raise ValueError("Expected one of: c[ritical], h[igh], m[edium], l[ow], n[one], got '{}' instead.".format(threat))
+
+        self.threat_excluded = [*threat_excluded.lower()]
         self.threat_included = list(self.levels().values())
         
 
