@@ -12,10 +12,10 @@ You can install this package directly from source by cloning the Git repository.
    dnf install python3 python3-pip       # Fedora
 
    # Clone repo
-   git clone git@github.com:TheGroundZero/openvasreporting.git
+   git clone git@github.com:groupecnpp/OpenvasReporting.git
 
    # Install requirements
-   cd openvasreporting
+   cd OpenvasReporting
    pip3 install -r requirements.txt
    pip3 install build --upgrade
    pip3 install pip --upgrade

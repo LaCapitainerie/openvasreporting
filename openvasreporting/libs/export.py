@@ -138,10 +138,10 @@ def export_to_excel_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list
     workbook.set_properties({
         'title': output_file,
         'subject': 'OpenVAS report',
-        'author': 'TheGroundZero',
+        'author': 'CNPP',
         'category': 'report',
         'keywords': 'OpenVAS, report',
-        'comments': 'TheGroundZero (https://github.com/TheGroundZero)'})
+        'comments': 'Forked from : TheGroundZero (https://github.com/TheGroundZero)'})
 
     # ====================
     # FORMATTING
@@ -864,10 +864,10 @@ def export_to_excel_by_host(resulttree: ResultTree, threat_type_list:list[str], 
     workbook.set_properties({
         'title': output_file,
         'subject': 'OpenVAS report',
-        'author': 'TheGroundZero, ecgf(IcatuHolding)',
+        'author': 'CNPP',
         'category': 'report',
         'keywords': 'OpenVAS, report',
-        'comments': 'TheGroundZero (https://github.com/TheGroundZero)'})
+        'comments': 'Forked from : TheGroundZero (https://github.com/TheGroundZero)'})
 
     # ====================
     # FORMATTING

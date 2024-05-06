@@ -6,7 +6,7 @@
 
 from .openvasreporting import main
 
-__author__ = 'CNPP (https://github.com/TheGroundZero)'
+__author__ = 'CNPP (https://github.com/groupecnpp)'
 __maintainer__ = 'LaCapitainerie'
 
 if __name__ == '__main__':

@@ -87,7 +87,7 @@ html_theme_options = {
     'logo': 'img/OpenVASreporting.png',
     'touch_icon': 'img/OpenVASreporting.png',
     'logo_name': False,
-    'github_user': 'TheGroundZero',
+    'github_user': 'CNPP',
     'github_repo': 'openvas_to_report',
     'github_button': True,
     'sidebar_collapse': False,
@@ -143,7 +143,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'OpenVASReporting.tex', 'OpenVAS Reporting Documentation',
-     'TheGroundZero', 'manual'),
+     'CNPP', 'manual'),
 ]
 
 

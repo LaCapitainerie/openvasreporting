@@ -72,8 +72,8 @@ I am planning to maintain this tool in the future as to be able to support futur
 I also plan on adding more functionality as I feel the need for it, or receive requests from others.
 
 If you feel like I'd need to implement a new feature, rewrite some code, fix a bug, ...
-hit me up on `Twitter <https://twitter.com/DezeStijn>`_
-or file an issue on `GitHub <https://github.com/TheGroundZero/openvasreporting>`_.
+hit me up on `Twitter <https://twitter.com/groupe_cnpp>`_
+or file an issue on `GitHub <https://github.com/groupecnpp/OpenvasReporting>`_.
 
 TODO list
 ---------
@@ -81,32 +81,32 @@ TODO list
 .. todolist::
 
 
-.. |codecov| image:: https://codecov.io/gh/TheGroundZero/openvasreporting/branch/master/graph/badge.svg
+.. |codecov| image:: https://codecov.io/gh/groupecnpp/OpenvasReporting/branch/master/graph/badge.svg
    :alt: Code Coverage
-   :target: https://codecov.io/gh/TheGroundZero/openvasreporting
+   :target: https://codecov.io/gh/groupecnpp/OpenvasReporting
 .. |docs| image:: https://readthedocs.org/projects/openvas-reporting/badge/?version=latest&style=flat
    :target: https://openvas-reporting.sequr.be/en/latest/
    :alt: Documentation
-.. |license| image:: https://img.shields.io/github/license/TheGroundZero/openvasreporting.svg
+.. |license| image:: https://img.shields.io/github/license/groupecnpp/OpenvasReporting.svg
    :alt: GitHub
-   :target: https://github.com/TheGroundZero/openvasreporting/blob/master/LICENSE
+   :target: https://github.com/groupecnpp/OpenvasReporting/blob/master/LICENSE
 .. |pypi_format| image:: https://img.shields.io/pypi/format/OpenVAS-Reporting.svg
    :alt: PyPI - Format
    :target: https://pypi.org/project/OpenVAS-Reporting/
 .. |pypi_version| image:: https://img.shields.io/pypi/v/OpenVAS-Reporting.svg
    :alt: PyPI - Version
    :target: https://pypi.org/project/OpenVAS-Reporting/
-.. |requires| image:: https://requires.io/github/TheGroundZero/openvasreporting/requirements.svg?branch=master
-   :target: https://requires.io/github/TheGroundZero/openvasreporting/requirements/?branch=master
+.. |requires| image:: https://requires.io/github/groupecnpp/OpenvasReporting/requirements.svg?branch=master
+   :target: https://requires.io/github/groupecnpp/OpenvasReporting/requirements/?branch=master
    :alt: Requirements Status
-.. |version| image:: https://badge.fury.io/gh/TheGroundZero%2Fopenvasreporting.svg
-   :target: https://badge.fury.io/gh/TheGroundZero%2Fopenvasreporting
-.. |vulns| image:: https://snyk.io/test/github/TheGroundZero/openvasreporting/badge.svg?targetFile=requirements.txt
+.. |version| image:: https://badge.fury.io/gh/groupecnpp%2FOpenvasReporting.svg
+   :target: https://badge.fury.io/gh/groupecnpp%2FOpenvasReporting
+.. |vulns| image:: https://snyk.io/test/github/groupecnpp/OpenvasReporting/badge.svg?targetFile=requirements.txt
    :alt: Known Vulnerabilities
-   :target: https://snyk.io/test/github/TheGroundZero/openvasreporting?targetFile=requirements.txt
-.. |alerts| image:: https://img.shields.io/lgtm/alerts/g/TheGroundZero/openvasreporting.svg?logo=lgtm&logoWidth=18
+   :target: https://snyk.io/test/github/groupecnpp/OpenvasReporting?targetFile=requirements.txt
+.. |alerts| image:: https://img.shields.io/lgtm/alerts/g/groupecnpp/OpenvasReporting.svg?logo=lgtm&logoWidth=18
    :alt: Total alerts
-   :target: https://lgtm.com/projects/g/TheGroundZero/openvasreporting/alerts/
-.. |grade| image:: https://img.shields.io/lgtm/grade/python/g/TheGroundZero/openvasreporting.svg?logo=lgtm&logoWidth=18
+   :target: https://lgtm.com/projects/g/groupecnpp/OpenvasReporting/alerts/
+.. |grade| image:: https://img.shields.io/lgtm/grade/python/g/groupecnpp/OpenvasReporting.svg?logo=lgtm&logoWidth=18
    :alt: Language Grade: Python
-   :target: https://lgtm.com/projects/g/TheGroundZero/openvasreporting/context:python
+   :target: https://lgtm.com/projects/g/groupecnpp/OpenvasReporting/context:python
