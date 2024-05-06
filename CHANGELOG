@@ -1,9 +1,21 @@
 Changelog
 =========
 
+2.0.0
+
+- Features:
+       - Changed Author of the repo and maintainer
+
+- Fixes:
+       - Changelog
+       - README
+       - Username
+       - Filtering option description
+       - Typo from all function that were not typed
+
 1.7.0
 
-- New Features:
+- Features:
        - Add Option to choose threat level
 - Fixes:
        - Small bugfixes and code refactoring
