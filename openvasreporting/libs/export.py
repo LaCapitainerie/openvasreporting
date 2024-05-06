@@ -79,7 +79,7 @@ def _get_collections(vuln_info:list[Vulnerability]) -> tuple[list[Vulnerability]
     return vuln_info, vuln_levels, vuln_host_by_level, vuln_by_family
 
 
-def export_to_excel_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list[str], template=None, output_file:str='openvas_report.xlsx'):
+def export_to_excel_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list[str], template=None, output_file:str='openvas_report.xlsx') -> None:
     """
     Export vulnerabilities info in an Excel file.
 
@@ -130,7 +130,7 @@ def export_to_excel_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list
     # ====================
     # FUNCTIONS
     # ====================
-    def __row_height(text, width):
+    def __row_height(text:str, width:int) -> int:
         return (max((len(text) // width), text.count('\n')) + 1) * 15
 
     workbook = xlsxwriter.Workbook(output_file)
@@ -403,7 +403,7 @@ def export_to_excel_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list
     workbook.close()
 
 
-def export_to_word_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list[str], template=None, output_file:str='openvas_report.docx'):
+def export_to_word_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list[str], template=None, output_file:str='openvas_report.docx') -> None:
     """
     Export vulnerabilities info in a Word file.
 
@@ -732,7 +732,7 @@ def export_to_word_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list[
     document.save(output_file)
 
 
-def export_to_csv_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list[str], template=None, output_file:str='openvas_report.csv'):
+def export_to_csv_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list[str], template=None, output_file:str='openvas_report.csv') -> None:
     """
     Export vulnerabilities info in a Comma Separated Values (csv) file
 
@@ -810,7 +810,7 @@ def export_to_csv_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list[s
                 writer.writerow(rowdata)
 
 
-def export_to_excel_by_host(resulttree: ResultTree, threat_type_list:list[str], template=None, output_file:str='openvas_report.xlsx'):
+def export_to_excel_by_host(resulttree: ResultTree, threat_type_list:list[str], template=None, output_file:str='openvas_report.xlsx') -> None:
     """
     Export vulnerabilities info in an Excel file.
 
@@ -1122,7 +1122,7 @@ def export_to_excel_by_host(resulttree: ResultTree, threat_type_list:list[str], 
     workbook.close()
 
 
-def export_to_csv_by_host(resulttree: ResultTree, threat_type_list:list[str], template=None, output_file:str='openvas_report.csv'):
+def export_to_csv_by_host(resulttree: ResultTree, threat_type_list:list[str], template=None, output_file:str='openvas_report.csv') -> None:
     """
     Export vulnerabilities info in a Comma Separated Values (csv) file
 
@@ -1202,7 +1202,7 @@ def export_to_csv_by_host(resulttree: ResultTree, threat_type_list:list[str], te
                     writer.writerow(rowdata)
 
 
-def export_summary_to_csv(vuln_info:list[Vulnerability], threat_type_list:list[str], template=None, output_file:str='openvas_summary_report.csv'):
+def export_summary_to_csv(vuln_info:list[Vulnerability], threat_type_list:list[str], template=None, output_file:str='openvas_summary_report.csv') -> None:
     """
     Export summary info in a Comma Separated Values (csv) file
 

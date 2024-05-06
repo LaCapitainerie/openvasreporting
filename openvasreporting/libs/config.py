@@ -7,6 +7,7 @@
 """This file contains data structures"""
 
 import re
+from typing import AnyStr, Union
 import netaddr
 import glob
 
@@ -17,7 +18,7 @@ class Config(object):
     def __init__(self, input_files, output_file:str="openvas_report", min_level:str="n", format:str="xlsx",
                  report_type:str="host", template=None, networks_included=None, networks_excluded=None, 
                  regex_included=None, regex_excluded=None, cve_included=None, cve_excluded=None,
-                 threat_excluded=""):
+                 threat_excluded="") -> None:
         """
         :param input_files: input file path
         :type input_files: list(str)
@@ -162,7 +163,7 @@ class Config(object):
         
 
     @staticmethod
-    def colors():
+    def colors() -> dict[str, str]:
         return {
             'blue':     '#183868',
             'critical': '#702da0',
@@ -174,7 +175,7 @@ class Config(object):
 
         
     @staticmethod
-    def levels():
+    def levels() -> dict[str, str]:
         return {
             'c': 'critical',
             'h': 'high',
@@ -184,7 +185,7 @@ class Config(object):
         }
 
     @staticmethod
-    def thresholds():
+    def thresholds() -> dict[str, float]:
         return {
             'critical': 9.0,
             'high':     7.0,
@@ -194,21 +195,21 @@ class Config(object):
         }
 
     @staticmethod
-    def cvss_color(cvss):
+    def cvss_color(cvss) -> Union[str, None]:
         for key in Config.thresholds():
             if cvss >= Config.thresholds()[key]:
                 return Config.colors()[key]
         return None
         
     @staticmethod        
-    def cvss_level(cvss):
+    def cvss_level(cvss) -> Union[str, None]:
         for key in Config.thresholds():
             if cvss >= Config.thresholds()[key]:
                 return key
         return None
         
     @staticmethod
-    def min_levels():
+    def min_levels() -> dict[str, list[str]]:
         return {
             'critical': [Config.levels()['c']],
             'high':     [Config.levels()['c'], Config.levels()['h']],
@@ -221,7 +222,7 @@ class Config(object):
 #
 # includes lines from options files networks-includes and networks-excludes
 # into a list of netaddr instances for later comparision when parsing and filtering
-    def include_networks(self, lines):
+    def include_networks(self, lines) -> list[Union[netaddr.IPRange, netaddr.IPNetwork]]:
         outlines = []
         for ip in lines:
             if ip == '':
@@ -245,7 +246,7 @@ class Config(object):
 #
 # includes lines from options files regex-includes and regex-excludes
 # into a list of re.compile(d) instances for later comparision when parsing and filtering
-    def include_regex(self, lines):
+    def include_regex(self, lines) -> list[re.Pattern]:
         outlines = []
         for regex_entry in lines:
             try:
@@ -256,7 +257,7 @@ class Config(object):
         return outlines
 
 class Config_YAML(Config):
-    def __init__(self, input_files:list[str], config_file:str, output_file:str="openvas_report"):
+    def __init__(self, input_files:list[str], config_file:str, output_file:str="openvas_report") -> None:
         """
         :param input_files: input file path
         :type input_files: list(str)

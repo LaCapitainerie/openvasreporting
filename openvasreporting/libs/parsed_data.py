@@ -15,6 +15,10 @@ from .config import Config
 import netaddr
 
 import logging
+
+import xml.etree.ElementTree as ET
+
+
 #
 # DEBUG
 
@@ -30,7 +34,7 @@ dolog = False
 class Port(object):
     """Port information"""
 
-    def __init__(self, number:int, protocol:str="tcp", result:str=""):
+    def __init__(self, number:int, protocol:str="tcp", result:str="") -> None:
         """
         :param number: port number
         :type number: int
@@ -61,7 +65,7 @@ class Port(object):
 
     # Modified to include result in structure
     @staticmethod
-    def string2port(info:str, result:str):
+    def string2port(info:str, result:str) -> 'Port':
         """
         Extract port number, protocol and description from an string.
         return a port class with seperate port, protocol and result
@@ -102,8 +106,8 @@ class Port(object):
         if not isinstance(result, str):
             raise TypeError("Expected basestring, got '{}' instead".format(type(result)))
 
-        regex_nr = re.search("([\d]+)(/)([\w]+)", info) # type: ignore
-        regex_general = re.search("(general)(/)([\w]+)", info) # type: ignore
+        regex_nr = re.search("([\d]+)(/)([\w]+)", info)  # type: ignore
+        regex_general = re.search("(general)(/)([\w]+)", info)  # type: ignore
 
         if regex_nr and len(regex_nr.groups()) == 3:
             number = int(regex_nr.group(1))
@@ -116,7 +120,7 @@ class Port(object):
 
         return Port(number, protocol, result)
 
-    def __eq__(self, other:'Port'):
+    def __eq__(self, other:'Port') -> bool:
         return (
                 isinstance(other, Port) and
                 other.number == self.number and
@@ -128,7 +132,7 @@ class ParseVulnerability:
     """
     Parses and analyses a Vulnerability XML Entry 
     """
-    def __init__(self, vuln, min_level: str):
+    def __init__(self, vuln, min_level: str) -> None: 
         """
         Parses an openvas <result> xml Et.Element.
         
@@ -144,11 +148,12 @@ class ParseVulnerability:
             raise TypeError("expected str, got '{}' instead".format(type(str)))
 
         nvt_tmp = vuln.find("./nvt")
+
     
         # --------------------
         #
         # VULN_NAME
-        self.vuln_name:str = nvt_tmp.find("./name").text
+        self.vuln_name:str = nvt_tmp.find("./name").text 
     
         if dolog: logging.debug(
             "--------------------------------------------------------------------------------")
@@ -161,7 +166,7 @@ class ParseVulnerability:
         #
         # VULN_VERSION
         self.vuln_version = ""
-        desc:str = vuln.find("./description").text
+        desc:str = vuln.find("./description").text 
         if desc is None:
             desc = ""
         match = re.search(r'Installed version: ((\d|.)+)', desc)
@@ -173,16 +178,16 @@ class ParseVulnerability:
         # --------------------
         #
         # VULN_ID
-        self.vuln_id = nvt_tmp.get("oid")
+        self.vuln_id = nvt_tmp.get("oid") 
         if not self.vuln_id or self.vuln_id == "0":
             if dolog: logging.debug("  ==> SKIP")  # DEBUG
-            raise ValueError("Expected valid <result> openvas xml element, got '{}' instead".format(vuln.text))
+            raise ValueError("Expected valid <result> openvas xml element, got '{}' instead".format(vuln))
         if dolog: logging.debug("* vuln_id:\t{}".format(self.vuln_id))  # DEBUG
     
         # --------------------
         #
         # VULN_CVSS
-        self.vuln_cvss = vuln.find("./severity").text
+        self.vuln_cvss = vuln.find("./severity").text 
         if self.vuln_cvss is None:
             self.vuln_cvss = 0.0
         self.vuln_cvss = float(self.vuln_cvss)
@@ -206,12 +211,12 @@ class ParseVulnerability:
         # --------------------
         #
         # VULN_HOST
-        self.vuln_host:str = vuln.find("./host").text
-        self.vuln_host_name:str = vuln.find("./host/hostname").text
+        self.vuln_host:str = vuln.find("./host").text 
+        self.vuln_host_name:str = vuln.find("./host/hostname").text 
         if self.vuln_host_name is None:
             self.vuln_host_name = "N/A"
         if dolog: logging.debug("* hostname:\t{}".format(self.vuln_host_name))  # DEBUG
-        self.vuln_port = vuln.find("./port").text
+        self.vuln_port = vuln.find("./port").text 
         if dolog: logging.debug(
             "* vuln_host:\t{} port:\t{}".format(self.vuln_host, self.vuln_port))  # DEBUG
     
@@ -219,7 +224,7 @@ class ParseVulnerability:
         #
         # VULN_TAGS
         # Replace double newlines by a single newline
-        self.vuln_tags_text = re.sub(r"(\r\n)+", "\r\n", nvt_tmp.find("./tags").text)
+        self.vuln_tags_text = re.sub(r"(\r\n)+", "\r\n", nvt_tmp.find("./tags").text) 
         self.vuln_tags_text = re.sub(r"\n+", "\n", self.vuln_tags_text)
         # Remove useless whitespace but not newlines
         self.vuln_tags_text = re.sub(r"[^\S\r\n]+", " ", self.vuln_tags_text)
@@ -230,7 +235,7 @@ class ParseVulnerability:
         # --------------------
         #
         # VULN_THREAT
-        self.vuln_threat:str = vuln.find("./threat").text
+        self.vuln_threat:str = vuln.find("./threat").text 
         if self.vuln_threat is None:
             self.vuln_threat = Config.levels()["n"]
         else:
@@ -241,7 +246,7 @@ class ParseVulnerability:
         # --------------------
         #
         # VULN_FAMILY
-        self.vuln_family:str = nvt_tmp.find("./family").text
+        self.vuln_family:str = nvt_tmp.find("./family").text 
     
         if dolog: logging.debug("* vuln_family:\t{}".format(self.vuln_family))  # DEBUG
     
@@ -251,11 +256,11 @@ class ParseVulnerability:
         #vuln_cves = nvt_tmp.findall("./refs/ref")
         self.vuln_cves:list[str] = []
         self.ref_list:list[str] = []
-        for reference in nvt_tmp.findall('./refs/ref'):
+        for reference in nvt_tmp.findall('./refs/ref'): 
             if reference.attrib.get('type') == 'cve':
-                self.vuln_cves.append(reference.attrib.get('id'))
+                self.vuln_cves.append(reference.attrib.get('id')) 
             else:
-                self.ref_list.append(reference.attrib.get('id'))
+                self.ref_list.append(reference.attrib.get('id')) 
         # if dolog: logging.debug("* vuln_cves:\t{}".format(vuln_cves))  # DEBUG
         # if dolog: logging.debug("* vuln_cves:\t{}".format(Et.tostring(vuln_cves).decode()))  # DEBUG
         # if vuln_cves is None or vuln_cves.text.lower() == "nocve":
@@ -280,10 +285,10 @@ class ParseVulnerability:
         #
         # VULN_DESCRIPTION
         tmpVulnResult = vuln.find("./description")
-        if tmpVulnResult is None or vuln.find("./description").text is None:
+        if tmpVulnResult is None or vuln.find("./description").text is None: 
             self.vuln_result = ""
         else:
-            self.vuln_result = tmpVulnResult.text
+            self.vuln_result = tmpVulnResult.text or ""
     
         # Replace double newlines by a single newline
         self.vuln_result:str = self.vuln_result.replace("(\r\n)+", "\n")
@@ -291,7 +296,7 @@ class ParseVulnerability:
         if dolog: logging.debug("* vuln_result:\t{}".format(self.vuln_result))  # DEBUG
 
     @classmethod
-    def check_and_parse_result(cls, vuln, config: Config):
+    def check_and_parse_result(cls, vuln, config: Config) -> Union['ParseVulnerability', None]:
         """
         checks if this vulnerability result element in the openvas xml report
         will be included in the convertion. If so, it instantiates a ParsedVulnerability
@@ -388,7 +393,7 @@ class ParseVulnerability:
 class Host(object):
     """Host information"""
 
-    def __init__(self, ip:str, host_name:str=""):
+    def __init__(self, ip:str, host_name:str="") -> None:
         """
         :param ip: Host IP
         :type ip: basestring
@@ -413,10 +418,10 @@ class Host(object):
                    'none': 0
                   }
         self.sum_cvss = 0
-        self.higher_cvss = 0
+        self.higher_cvss = .0
         self.vuln_list = []
  
-    def addvulnerability(self, parsed_vuln: ParseVulnerability):
+    def addvulnerability(self, parsed_vuln: ParseVulnerability) -> None:
         """
         Creates and adds a new vulnerability from an instance of ParseVulnerability
         
@@ -433,7 +438,7 @@ class Host(object):
             if v.vuln_id == parsed_vuln.vuln_id:
                 return
             
-        v = Vulnerability(parsed_vuln.vuln_id,
+        v = Vulnerability(parsed_vuln.vuln_id, 
                           name=parsed_vuln.vuln_name,
                           version=parsed_vuln.vuln_version,
                           threat=parsed_vuln.vuln_threat,
@@ -445,7 +450,7 @@ class Host(object):
                           level=parsed_vuln.vuln_level)
         try:
             # added results to port function as will ne unique per port on each host.
-            port = Port.string2port(parsed_vuln.vuln_port, parsed_vuln.vuln_result)
+            port = Port.string2port(parsed_vuln.vuln_port, parsed_vuln.vuln_result) 
         except ValueError:
             port = Port(0, "", "")
         v.add_vuln_host(self, port)
@@ -456,10 +461,10 @@ class Host(object):
         if v.cvss > self.higher_cvss:
             self.higher_cvss = v.cvss
     
-    def nv_total(self):
+    def nv_total(self) -> int:
         return sum(self.nv.values())
                    
-    def __eq__(self, other:'Host'):
+    def __eq__(self, other:'Host') -> bool:
         return (
                 isinstance(other, Host) and
                 other.ip == self.ip and
@@ -469,7 +474,7 @@ class Host(object):
 class Vulnerability(object):
     """Vulnerability information"""
 
-    def __init__(self, vuln_id:str, name:str, threat:str, **kwargs):
+    def __init__(self, vuln_id:str, name:str, threat:str, **kwargs) -> None:
         """
         :param vuln_id: OpenVAS plugin id
         :type vuln_id: basestring
@@ -525,9 +530,9 @@ class Vulnerability(object):
         if not isinstance(cves, list):
             raise TypeError("Expected list, got '{}' instead".format(type(cves)))
         else:
-            for x in cves:
-                if not isinstance(x, str):
-                    raise TypeError("Expected basestring, got '{}' instead".format(type(x)))
+            for cve in cves:
+                if not isinstance(cve, str):
+                    raise TypeError("Expected basestring, got '{}' instead".format(type(cve)))
 
         if not isinstance(cvss, (float, int)):
             raise TypeError("Expected float, got '{}' instead".format(type(cvss)))
@@ -559,7 +564,7 @@ class Vulnerability(object):
         # Hosts
         self.hosts:list[tuple[Host, Port]] = []
 
-    def add_vuln_host(self, host:Host, port:Port):
+    def add_vuln_host(self, host:Host, port:Port) -> None:
         """
         Add a host and a port associated to this vulnerability
 
@@ -580,7 +585,7 @@ class Vulnerability(object):
         if (host, port) not in self.hosts:
             self.hosts.append((host, port))
 
-    def __eq__(self, other:'Vulnerability'):
+    def __eq__(self, other:'Vulnerability') -> bool:
         if not isinstance(other, Vulnerability):
             raise TypeError("Expected Vulnerability, got '{}' instead".format(type(other)))
 
@@ -612,12 +617,12 @@ class Vulnerability(object):
 
         return True
 
-class ResultTree(dict):
+class ResultTree(dict[str, Host]):
     """
       A dict of Hosts instances
     """
 
-    def addresult(self, parsed_vuln: ParseVulnerability):
+    def addresult(self, parsed_vuln: ParseVulnerability) -> None:
         """
         Adds a new vulnerability to an existing Host instance or creates one 
         
@@ -636,37 +641,34 @@ class ResultTree(dict):
             self[hostip] = Host(hostip, parsed_vuln.vuln_host_name)
             self[hostip].addvulnerability(parsed_vuln)
             
-    def sortedbysumcvss(self):
+    def sortedbysumcvss(self) -> list[str]:
         """
         Returns a dict of keys and sum of cvss severity ordered by sum of cvss severity
         """
-        temp_dict = {} 
-        for key in self:
-            temp_dict[key] = (self[key].higher_cvss, self[key].sum_cvss)
+        temp_dict = {key: (self[key].higher_cvss, self[key].sum_cvss) for key in self}
             
         s = list({key: v1 for key, v1 in sorted(temp_dict.items(), key=lambda x: (x[1], x[0]), reverse = True)}.keys())
         return s
 
-    def sortedbynumvulnerabilities(self):
+    def sortedbynumvulnerabilities(self) -> dict[str, int]:
         """
         Returns a dict of keys and number of vulnerabilities ordered by number of vulnerabilities
         """
-        temp_dict = {}
-        for key in self:
-            temp_dict[key] = self[key].num_vulns
+        temp_dict = {key: self[key].num_vulns for key in self}
+        
 #        s = res = {key: val for key, val in sorted(temp_dict.items(), key = lambda ele: ele[1], reverse = True)}
         return {key: val for key, val in sorted(temp_dict.items(), key = lambda ele: ele[1], reverse = True)}
 
-    def sorted_keys_by_rank(self):
+    def sorted_keys_by_rank(self) -> list[str]:
         """
         Returns a list of keys of self reverse ordered by rank. 'Rank' here emulates
         the order used at openvas' host tab in the report page of a task: 
         higher_cvss -> # critical vulns -> # high vulns -> # medium vulns -> # low vulns
         """
-        temp_list = []
-        for key in self:
-            temp_list.append((self[key].nv['low'], self[key].nv['medium'], self[key].nv['high'], 
-                              self[key].nv['critical'], self[key].higher_cvss, key))
+        temp_list = [(self[key].nv['low'], self[key].nv['medium'], self[key].nv['high'], 
+                    self[key].nv['critical'], self[key].higher_cvss, key) for key in self]
+            
+        
         s = [v[5] for v in sorted(temp_list, 
                                   key = lambda x: (x[4], x[3], x[2], x[1], x[0]), 
                                   reverse=True)]

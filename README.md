@@ -82,7 +82,7 @@ This currently has some issues (see #4)
 ### Parameters
 
 | Short param | Long param        | Description          | Required | Default value                              |
-| :---------: | :---------------: | :------------------: | :------: | :----------------------------------------- |
+| :---------: | :---------------: | :------------------: | :------: | :----------------------------------------: |
 | -i          | --input           | Input file(s)        | YES      | n/a                                        |
 | -o          | --output          | Output filename      | No       | openvas\_report                             |
 | -c          | --config-file     | .yml configuration   | No       | None                                       |
@@ -117,6 +117,11 @@ CVEs are inserted in the `CVE-YYYY-nnnnn` format.
 The `-c` option will read a .yml file with all configurations.
 If the `-c` option is used, any other options but input and output filenames are ignored.
 There is a sample of a configuration file in the `docs/` folder
+
+The -D option will read a string of Threat types.
+**c**ritical, **h**igh, **m**edium, **l**ow, **n**one
+Can be accumulate like this: `-D chmln`
+Any letter not recognize will just be ignored
 
 ## Examples
 

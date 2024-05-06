@@ -7,6 +7,7 @@
 # TODO: get rid of the log clutter
 
 import logging
+from typing import Callable
 from .config import Config
 from .parsed_data import ResultTree, Host, Port, Vulnerability, ParseVulnerability
 
@@ -25,7 +26,7 @@ dolog = False
 
 from defusedxml import ElementTree as Et
 
-def parsers():
+def parsers() -> dict[str, Callable]:
         """
         Enum-like instance containing references to correct parser function
     
@@ -39,7 +40,7 @@ def parsers():
             'summary': openvas_parser_by_vuln
         }
 
-def openvas_parser_by_vuln(config: Config):
+def openvas_parser_by_vuln(config: Config) -> list[Vulnerability]:
     """
     This function takes an OpenVAS XML report and returns Vulnerability info
 
@@ -77,8 +78,10 @@ def openvas_parser_by_vuln(config: Config):
         for vuln in root.findall(".//results/result"):
 
             parsed_vuln = ParseVulnerability.check_and_parse_result(vuln, config)
-
             if parsed_vuln is None:
+                continue
+
+            if Config.cvss_level(parsed_vuln.vuln_cvss) not in config.threat_included:
                 continue
 
             # --------------------
@@ -87,12 +90,12 @@ def openvas_parser_by_vuln(config: Config):
             host = Host(parsed_vuln.vuln_host, host_name=parsed_vuln.vuln_host_name)
             try:
                 # added results to port function as will ne unique per port on each host.
-                port = Port.string2port(parsed_vuln.vuln_port, parsed_vuln.vuln_result)
+                port = Port.string2port(parsed_vuln.vuln_port, parsed_vuln.vuln_result) 
             except ValueError:
                 port = Port(0, "", "")
 
             vuln_store = Vulnerability(
-                parsed_vuln.vuln_id,
+                parsed_vuln.vuln_id, 
                 name=parsed_vuln.vuln_name,
                 threat=parsed_vuln.vuln_threat,
                 tags=parsed_vuln.vuln_tags,
@@ -104,11 +107,11 @@ def openvas_parser_by_vuln(config: Config):
             )
 
             vuln_store.add_vuln_host(host, port)
-            vulnerabilities[parsed_vuln.vuln_id] = vuln_store
+            vulnerabilities[parsed_vuln.vuln_id] = vuln_store 
 
     return list(vulnerabilities.values())
 
-def openvas_parser_by_host(config: Config):
+def openvas_parser_by_host(config: Config) -> ResultTree:
     """
     This function takes an OpenVAS XML report and returns Vulnerability info
 

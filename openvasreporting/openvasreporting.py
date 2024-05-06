@@ -13,7 +13,7 @@ from .libs.config import Config, Config_YAML
 from .libs.parser import parsers
 from .libs.export import implemented_exporters
 
-def main():
+def main() -> None:
 
     PROG_DESCRIPTION='''OpenVAS report Converter\n
 Parses one ore more OpenVAS xml report and creates a xlsx, docx or csv with the results
@@ -90,7 +90,7 @@ the regex expressions will be matched against the name of the vulnerability\n"""
     convert(config)
 
 
-def convert(config:Config):
+def convert(config:Config) -> None:
     """
     Convert the OpenVAS XML to requested format
 
