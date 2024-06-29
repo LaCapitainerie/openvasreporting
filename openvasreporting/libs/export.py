@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
 #
+"""
+
+This File contains main structure of the OpenVAS Reporting tool.
+All exports type are defined here.
+
+"""
 #
 # Project name: OpenVAS Reporting: A tool to convert OpenVAS XML reports into Excel files.
 # Project URL: https://github.com/groupecnpp/OpenvasReporting
 
-import re
+from re import sub, search
 
 from collections import Counter
 from typing import Callable
 
 from .config import Config
 from .parsed_data import ResultTree, Host, Vulnerability
-
-# DEBUG
-#import sys
-#import logging
-#logging.basicConfig(stream=sys.stderr, level=logging.WARNING,
-#                     format="%(asctime)s | %(levelname)s | %(name)s | %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 
 
 def implemented_exporters() -> dict[str, Callable]:
@@ -293,7 +293,7 @@ def export_to_excel_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list
     # VULN SHEETS
     # ====================
     for i, vuln in enumerate(vuln_info, 1):
-        name = re.sub(r"[\[\]\\\'\"&@#():*?/]", "", vuln.name)
+        name = sub(r"[\[\]\\\'\"&@#():*?/]", "", vuln.name)
         if len(name) > 27:
             name = "{}..{}".format(name[0:15], name[-10:])
         name = "{:03X}_{}".format(i, name)
@@ -301,7 +301,7 @@ def export_to_excel_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list
         ws_vuln.set_tab_color(Config.colors()[vuln.level.lower()])
 
         vuln.version = ""
-        if(match := re.search(r'Installed version: ((\d|.)+)', vuln.hosts[0][1].result)):
+        if(match := search(r'Installed version: ((\d|.)+)', vuln.hosts[0][1].result)):
             vuln.version = match.group(1)
 
         # --------------------
@@ -667,7 +667,7 @@ def export_to_word_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list[
         cvss = str(vuln.cvss) if vuln.cvss != -1.0 else "No CVSS"
 
         vuln.version = ""
-        if(match := re.search(r'Installed version: ((\d|.)+)', vuln.hosts[0][1].result)):
+        if(match := search(r'Installed version: ((\d|.)+)', vuln.hosts[0][1].result)):
             vuln.version = match.group(1)
 
         txt_cells = table_vuln.columns[2].cells

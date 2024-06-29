@@ -1,34 +1,22 @@
 # -*- coding: utf-8 -*-
 #
+"""
+
+This file contains data structures
+
+"""
 #
 # Project name: OpenVAS Reporting: A tool to convert OpenVAS XML reports into Excel files.
 # Project URL: https://github.com/groupecnpp/OpenvasReporting
 
-# TODO: Get rid of all the log messages
 
-"""This file contains data structures"""
 
-import re
+from re import search, sub
 from typing import Union
 
 from .config import Config
-import netaddr
+from netaddr import IPAddress
 
-import logging
-
-import xml.etree.ElementTree as ET
-
-
-#
-# DEBUG
-
-#import logging
-#import sys
-#logging.basicConfig(stream=sys.stderr, level=logging.DEBUG,
-#                    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
-#logging.basicConfig(stream=sys.stderr, level=logging.ERROR,
-#                    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
-dolog = False
 
 # Port object modifed to include result data field
 class Port(object):
@@ -106,8 +94,8 @@ class Port(object):
         if not isinstance(result, str):
             raise TypeError("Expected basestring, got '{}' instead".format(type(result)))
 
-        regex_nr = re.search("([\d]+)(/)([\w]+)", info)  # type: ignore
-        regex_general = re.search("(general)(/)([\w]+)", info)  # type: ignore
+        regex_nr = search("([\d]+)(/)([\w]+)", info)  # type: ignore
+        regex_general = search("(general)(/)([\w]+)", info)  # type: ignore
 
         if regex_nr and len(regex_nr.groups()) == 3:
             number = int(regex_nr.group(1))
@@ -154,13 +142,7 @@ class ParseVulnerability:
         #
         # VULN_NAME
         self.vuln_name:str = nvt_tmp.find("./name").text 
-    
-        if dolog: logging.debug(
-            "--------------------------------------------------------------------------------")
-        if dolog: logging.debug("- {}".format(self.vuln_name))  # DEBUG
-        if dolog: logging.debug(
-            "--------------------------------------------------------------------------------")
-    
+
 
         # --------------------
         #
@@ -169,20 +151,18 @@ class ParseVulnerability:
         desc:str = vuln.find("./description").text 
         if desc is None:
             desc = ""
-        match = re.search(r'Installed version: ((\d|.)+)', desc)
+        match = search(r'Installed version: ((\d|.)+)', desc)
         if match is not None :
             self.vuln_version = match.group(1)
-            
-        if dolog: logging.debug("* vuln_version:\t{}".format(self.vuln_version))  # DEBUG
+
 
         # --------------------
         #
         # VULN_ID
         self.vuln_id = nvt_tmp.get("oid") 
         if not self.vuln_id or self.vuln_id == "0":
-            if dolog: logging.debug("  ==> SKIP")  # DEBUG
             raise ValueError("Expected valid <result> openvas xml element, got '{}' instead".format(vuln))
-        if dolog: logging.debug("* vuln_id:\t{}".format(self.vuln_id))  # DEBUG
+
     
         # --------------------
         #
@@ -191,7 +171,7 @@ class ParseVulnerability:
         if self.vuln_cvss is None:
             self.vuln_cvss = 0.0
         self.vuln_cvss = float(self.vuln_cvss)
-        if dolog: logging.debug("* vuln_cvss:\t{}".format(self.vuln_cvss))  # DEBUG
+
     
         # --------------------
         #
@@ -200,14 +180,13 @@ class ParseVulnerability:
         for level in Config.levels().values():
             if self.vuln_cvss >= Config.thresholds()[level]:
                 self.vuln_level = level
-                if dolog: logging.debug("* vuln_level:\t{}".format(self.vuln_level))  # DEBUG
                 break
-    
-        if dolog: logging.debug("* min_level:\t{}".format(min_level))  # DEBUG
+
+
         if self.vuln_level not in Config.min_levels()[min_level]:
-            if dolog: logging.debug("   => SKIP")  # DEBUG
             raise ValueError("Expected min_level in one of 'chmln', got '{}' instead".format(min_level))
-    
+
+
         # --------------------
         #
         # VULN_HOST
@@ -215,22 +194,20 @@ class ParseVulnerability:
         self.vuln_host_name:str = vuln.find("./host/hostname").text 
         if self.vuln_host_name is None:
             self.vuln_host_name = "N/A"
-        if dolog: logging.debug("* hostname:\t{}".format(self.vuln_host_name))  # DEBUG
-        self.vuln_port = vuln.find("./port").text 
-        if dolog: logging.debug(
-            "* vuln_host:\t{} port:\t{}".format(self.vuln_host, self.vuln_port))  # DEBUG
-    
+        self.vuln_port = vuln.find("./port").text
+
+
         # --------------------
         #
         # VULN_TAGS
         # Replace double newlines by a single newline
-        self.vuln_tags_text = re.sub(r"(\r\n)+", "\r\n", nvt_tmp.find("./tags").text) 
-        self.vuln_tags_text = re.sub(r"\n+", "\n", self.vuln_tags_text)
+        self.vuln_tags_text = sub(r"(\r\n)+", "\r\n", nvt_tmp.find("./tags").text) 
+        self.vuln_tags_text = sub(r"\n+", "\n", self.vuln_tags_text)
         # Remove useless whitespace but not newlines
-        self.vuln_tags_text = re.sub(r"[^\S\r\n]+", " ", self.vuln_tags_text)
+        self.vuln_tags_text = sub(r"[^\S\r\n]+", " ", self.vuln_tags_text)
         vuln_tags_temp = self.vuln_tags_text.split('|')
         self.vuln_tags = dict(tag.split('=', 1) for tag in vuln_tags_temp)
-        if dolog: logging.debug("* vuln_tags:\t{}".format(self.vuln_tags))  # DEBUG
+
     
         # --------------------
         #
@@ -240,15 +217,13 @@ class ParseVulnerability:
             self.vuln_threat = Config.levels()["n"]
         else:
             self.vuln_threat = self.vuln_threat.lower()
-    
-        if dolog: logging.debug("* vuln_threat:\t{}".format(self.vuln_threat))  # DEBUG
+
     
         # --------------------
         #
         # VULN_FAMILY
-        self.vuln_family:str = nvt_tmp.find("./family").text 
-    
-        if dolog: logging.debug("* vuln_family:\t{}".format(self.vuln_family))  # DEBUG
+        self.vuln_family:str = nvt_tmp.find("./family").text
+
     
         # --------------------
         #
@@ -261,15 +236,11 @@ class ParseVulnerability:
                 self.vuln_cves.append(reference.attrib.get('id')) 
             else:
                 self.ref_list.append(reference.attrib.get('id')) 
-        # if dolog: logging.debug("* vuln_cves:\t{}".format(vuln_cves))  # DEBUG
-        # if dolog: logging.debug("* vuln_cves:\t{}".format(Et.tostring(vuln_cves).decode()))  # DEBUG
         # if vuln_cves is None or vuln_cves.text.lower() == "nocve":
         #     vuln_cves = []
         # else:
         #     vuln_cves = [vuln_cves.text.lower()]
         self.vuln_references = ' , '.join(self.ref_list)
-        if dolog: logging.debug("* vuln_cves:\t{}".format(self.vuln_cves))  # DEBUG
-        if dolog: logging.debug("* vuln_references:\t{}".format(self.vuln_references))
         # --------------------
         #
         # VULN_REFERENCES
@@ -278,8 +249,7 @@ class ParseVulnerability:
         #     vuln_references = []
         # else:
         #     vuln_references = vuln_references.text.lower().replace("url:", "\n")
-    
-        # if dolog: logging.debug("* vuln_references:\t{}".format(vuln_references))  # DEBUG
+
     
         # --------------------
         #
@@ -292,8 +262,7 @@ class ParseVulnerability:
     
         # Replace double newlines by a single newline
         self.vuln_result:str = self.vuln_result.replace("(\r\n)+", "\n")
-    
-        if dolog: logging.debug("* vuln_result:\t{}".format(self.vuln_result))  # DEBUG
+
 
     @classmethod
     def check_and_parse_result(cls, vuln, config: Config) -> Union['ParseVulnerability', None]:
@@ -325,7 +294,7 @@ class ParseVulnerability:
         # is ip included and/or excluded?
         if config.networks_excluded is not None or config.networks_included is not None:
             host_ip:str = vuln.find('./host').text
-            host_ip_addr = netaddr.IPAddress(host_ip)
+            host_ip_addr = IPAddress(host_ip)
         
         if config.networks_excluded is not None:
             for ipline in config.networks_excluded:

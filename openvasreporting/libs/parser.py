@@ -1,28 +1,17 @@
 # -*- coding: utf-8 -*-
 #
+"""
+
+This file parse the XML report from OpenVAS and return the data in a structured way
+
+"""
 #
 # Project name: OpenVAS Reporting: A tool to convert OpenVAS XML reports into Excel files.
 # Project URL: https://github.com/groupecnpp/OpenvasReporting
 
-# TODO: get rid of the log clutter
-
-import logging
 from typing import Callable
 from .config import Config
 from .parsed_data import ResultTree, Host, Port, Vulnerability, ParseVulnerability
-
-#
-# DEBUG
-
-#import sys
-#import logging
-#logging.basicConfig(stream=sys.stderr, level=logging.DEBUG,
-#                    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
-# logging.basicConfig(stream=sys.stderr, level=logging.ERROR,
-#                    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
-dolog = False
-
-#__all__ = ["openvas_parser"]
 
 from defusedxml import ElementTree as Et
 
@@ -68,12 +57,6 @@ def openvas_parser_by_vuln(config: Config) -> list[Vulnerability]:
 
     for f_file in config.input_files:
         root = Et.parse(f_file).getroot()
-
-        if dolog: logging.debug(
-            "================================================================================")
-#        if dolog: logging.debug("= {}".format(root.find("./task/name").text))  # DEBUG
-        if dolog: logging.debug(
-            "================================================================================")
 
         for vuln in root.findall(".//results/result"):
 
@@ -139,12 +122,6 @@ def openvas_parser_by_host(config: Config) -> ResultTree:
 
     for f_file in config.input_files:
         root = Et.parse(f_file).getroot()
-
-        if dolog: logging.debug(
-            "================================================================================")
-#        if dolog: logging.debug("= {}".format(root.find("./task/name").text))  # DEBUG
-        if dolog: logging.debug(
-            "================================================================================")
 
         for vuln in root.findall(".//results/result"):
 

@@ -1,17 +1,22 @@
 # -*- coding: utf-8 -*-
 #
+"""
+
+This file contains data structures
+
+"""
 #
 # Project name: OpenVAS Reporting: A tool to convert OpenVAS XML reports into Excel files.
 # Project URL: https://github.com/groupecnpp/OpenvasReporting
 
-"""This file contains data structures"""
 
-import re
-from typing import AnyStr, Union
-import netaddr
-import glob
 
-import yaml
+from re import Pattern, error, compile, IGNORECASE
+from typing import Union
+from netaddr import AddrFormatError, IPNetwork, IPRange
+from glob import glob
+
+from yaml import load
 from yaml.loader import SafeLoader
 
 class Config(object):
@@ -99,7 +104,7 @@ class Config(object):
     
         ifiles = []
         for file in input_files:
-            ifiles.extend(glob.glob(file))
+            ifiles.extend(glob(file))
         self.input_files = ifiles
         self.output_file = "{}.{}".format(output_file, format) if output_file.split(".")[-1] != format \
             else output_file
@@ -226,7 +231,7 @@ class Config(object):
 #
 # includes lines from options files networks-includes and networks-excludes
 # into a list of netaddr instances for later comparision when parsing and filtering
-    def include_networks(self, lines) -> list[Union[netaddr.IPRange, netaddr.IPNetwork]]:
+    def include_networks(self, lines) -> list[Union[IPRange, IPNetwork]]:
         outlines = []
         for ip in lines:
             if ip == '':
@@ -234,28 +239,28 @@ class Config(object):
             if '-' in ip:    # ip range?
                 _start_ip, _end_ip = ip.split('-')
                 try:
-                    ip_range = netaddr.IPRange(_start_ip, _end_ip)
+                    ip_range = IPRange(_start_ip, _end_ip)
                     outlines.append(ip_range)
-                except netaddr.AddrFormatError:
-                    raise netaddr.AddrFormatError("Expected valid ip range, got '{}'-'{}' instead".format(_start_ip, _end_ip))
+                except AddrFormatError:
+                    raise AddrFormatError("Expected valid ip range, got '{}'-'{}' instead".format(_start_ip, _end_ip))
             else:            # ip or network cdir?
                 try:
-                    network = netaddr.IPNetwork(ip)
+                    network = IPNetwork(ip)
                     outlines.append(network)
-                except netaddr.AddrFormatError:
-                    raise netaddr.AddrFormatError("Expected valid ip address or network cidr, got '{}' instead.".format(ip))
+                except AddrFormatError:
+                    raise AddrFormatError("Expected valid ip address or network cidr, got '{}' instead.".format(ip))
 
         return outlines
 
 #
 # includes lines from options files regex-includes and regex-excludes
 # into a list of re.compile(d) instances for later comparision when parsing and filtering
-    def include_regex(self, lines) -> list[re.Pattern]:
+    def include_regex(self, lines) -> list[Pattern]:
         outlines = []
         for regex_entry in lines:
             try:
-                outlines.append(re.compile(regex_entry, re.IGNORECASE))
-            except re.error:
+                outlines.append(compile(regex_entry, IGNORECASE))
+            except error:
                 raise ValueError("Expected valid regex expression, got '{}' instead.".format(regex_entry))
 
         return outlines
@@ -292,13 +297,13 @@ class Config_YAML(Config):
 
         ifiles = []
         for file in input_files:
-            ifiles.extend(glob.glob(file))
+            ifiles.extend(glob(file))
         self.input_files = ifiles
         
         # loads configuration .yml file as a dict
         try:
             with open(config_file, 'r') as f:
-                yamldict = yaml.load(f, Loader=SafeLoader)
+                yamldict = load(f, Loader=SafeLoader)
         except FileNotFoundError:
             raise FileNotFoundError("Could Not find '{}'.".format(config_file))
         

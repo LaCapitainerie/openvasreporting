@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 #
+"""
+
+This page contains all flags and options for the OpenVAS Reporting tool.
+
+"""
 #
 # Project name: OpenVAS Reporting: A tool to convert OpenVAS XML reports into Excel files.
 # Project URL: https://github.com/groupecnpp/OpenvasReporting
 
-import argparse
+from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from typing import Union
 
 from openvasreporting.libs.parsed_data import ResultTree, Vulnerability
@@ -27,11 +32,11 @@ the regex expressions will be matched against the name of the vulnerability\n"""
 the regex expressions will be matched against the name of the vulnerability\n"""
 
 
-    parser = argparse.ArgumentParser(
-        prog="openvasreporting",  # TODO figure out why I need this in my code for -h to show correct name
+    parser = ArgumentParser(
+        prog="openvasreporting",
         description=PROG_DESCRIPTION,
         allow_abbrev=True,
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+        formatter_class=ArgumentDefaultsHelpFormatter
     )
     parser.add_argument("-i", "--input", nargs="*", dest="input_files", help="OpenVAS XML reports\n", 
                         required=True)
@@ -118,9 +123,12 @@ def convert(config:Config) -> None:
         
     tmp_openvas_info:Union[list[Vulnerability], ResultTree] = parsers()[config.report_type](config)
     
-    # --- Filter All Vulns here to avoid having to do it 3 times --- #
+    # --- TODO Filter All Vulns here to avoid having to do it 3 times --- #
 
     if isinstance(tmp_openvas_info, ResultTree):
+        ...
+
+    elif isinstance(tmp_openvas_info, list[Vulnerability]): # type: ignore
         ...
 
     else:
