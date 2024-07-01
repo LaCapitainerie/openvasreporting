@@ -29,11 +29,6 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-
-#
-# This file exists only so that I can debug using Wings. I don't know why (@dudacgf)
-#
-
 __author__ = 'CNPP (https://github.com/groupecnpp)'
 __maintainer__ = 'LaCapitainerie'
 __package__ = str("openvasreporting")
