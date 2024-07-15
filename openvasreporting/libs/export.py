@@ -942,8 +942,6 @@ def export_to_excel_by_host(resulttree: ResultTree, threat_type_list:list[str], 
     ws_sum.set_column("{}:{}".format(chr(threat_len_end), chr(threat_len_end)), 8, format_align_right) # total
     ws_sum.set_column("{}:{}".format(chr(threat_len_end + 1), chr(threat_len_end + 1)), 7, format_align_center) # severity
 
-    print(threat_type_list)
-
     # ---------------------
     # MAX 10 HOSTS 
     # ---------------------

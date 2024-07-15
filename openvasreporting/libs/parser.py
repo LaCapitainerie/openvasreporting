@@ -131,8 +131,6 @@ def openvas_parser_by_host(config: Config) -> ResultTree:
 
             if Config.cvss_level(parsed_vuln.vuln_cvss) not in config.threat_included:
                 continue
-            
-            print(parsed_vuln.vuln_cvss)
 
             resulttree.addresult(parsed_vuln)
 
