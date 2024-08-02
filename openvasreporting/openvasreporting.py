@@ -125,14 +125,14 @@ def convert(config:Config) -> None:
     
     # --- TODO Filter All Vulns here to avoid having to do it 3 times --- #
 
-    if isinstance(tmp_openvas_info, ResultTree):
-        ...
+    #if isinstance(tmp_openvas_info, ResultTree):
+    #    ...
 
-    elif isinstance(tmp_openvas_info, list[Vulnerability]): # type: ignore
-        ...
+    #elif isinstance(tmp_openvas_info, list[Vulnerability]): # type: ignore
+    #    ...
 
-    else:
-        ...
+    #else:
+    #    ...
         
 
         # Remove excluded vuln

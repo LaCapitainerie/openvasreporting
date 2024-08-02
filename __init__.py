@@ -32,3 +32,5 @@
 __author__ = 'CNPP (https://github.com/groupecnpp)'
 __maintainer__ = 'LaCapitainerie'
 __package__ = str("openvasreporting")
+
+__command__ = "python3 -m openvasreporting -i *.xml -o output.xlsx -T vulnerability"
