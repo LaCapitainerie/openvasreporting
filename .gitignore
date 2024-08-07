@@ -1,5 +1,6 @@
 tests/
 .idea/
+*.zip
 
 # Output File
 *.xlsx

@@ -301,7 +301,7 @@ def export_to_excel_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list
         ws_vuln.set_tab_color(Config.colors()[vuln.level.lower()])
 
         vuln.version = ""
-        if(match := search(r'Installed version: ((\d|.)+)', vuln.hosts[0][1].result)):
+        if(match := (search(r'Installed version: ((\d|.)+)', vuln.hosts[0][1].result) or search(r'EOL version:( )+((\d|.)+)', vuln.hosts[0][1].result))): # type: ignore
             vuln.version = match.group(1)
 
         # --------------------

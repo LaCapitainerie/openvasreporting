@@ -1,19 +1,14 @@
 Changelog
 =========
 
+2.1.0
+
+- Fixes :
+       - EOL version declaration were not recognized
+       
 2.0.0
 
-- Features:
-       - Changed Author of the repo and maintainer
-
-- Fixes:
-       - Changelog
-       - README
-       - Username
-       - Filtering option description
-       - Typo from all function that were not typed
-       - Threat level detection
-       - Unit test for Threat level
+- Changed Author of the repo and maintainer
 
 1.7.0
 

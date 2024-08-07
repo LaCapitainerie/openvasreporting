@@ -123,20 +123,18 @@ def convert(config:Config) -> None:
         
     tmp_openvas_info:Union[list[Vulnerability], ResultTree] = parsers()[config.report_type](config)
     
-    # --- TODO Filter All Vulns here to avoid having to do it 3 times --- #
+    # # --- TODO Filter All Vulns here to avoid having to do it 3 times --- #
 
-    #if isinstance(tmp_openvas_info, ResultTree):
+    # if isinstance(tmp_openvas_info, ResultTree):
     #    ...
 
-    #elif isinstance(tmp_openvas_info, list[Vulnerability]): # type: ignore
+    # elif isinstance(tmp_openvas_info, list) and all(isinstance(each, Vulnerability) for each in tmp_openvas_info): # type: ignore
     #    ...
 
-    #else:
-    #    ...
-        
-
-        # Remove excluded vuln
-        # openvas_info = list(filter(lambda x: Config.cvss_level(x.cvss) in config_allowed, tmp_openvas_info))
+    # else:
+    #     # Remove excluded vuln
+    #     openvas_info = list(filter(lambda x: Config.cvss_level(x.cvss) in config_allowed, tmp_openvas_info))
+    
 
     openvas_info = tmp_openvas_info
     
