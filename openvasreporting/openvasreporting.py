@@ -75,6 +75,10 @@ the regex expressions will be matched against the name of the vulnerability\n"""
                         required=False, default="")
     args = parser.parse_args()
 
+    # -- TODO: Add a check to see if the file exists -- #
+
+    # -- TODO: Group theses two class in a single one -- #
+
     if not args.config_file is None:
         config = Config_YAML(args.input_files, args.config_file, args.output_file)
     else:

@@ -1,10 +1,14 @@
 Changelog
 =========
 
+2.1.1
+
+- Features :
+       - Added a Contributing.md
+
 2.1.0
 
-- Fixes :
-       - EOL version declaration were not recognized
+- EOL version declaration were not recognized
        
 2.0.0
 
