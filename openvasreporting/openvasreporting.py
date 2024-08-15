@@ -10,6 +10,7 @@ This page contains all flags and options for the OpenVAS Reporting tool.
 # Project URL: https://github.com/groupecnpp/OpenvasReporting
 
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
+from os import path
 from typing import Union
 
 from openvasreporting.libs.parsed_data import ResultTree, Vulnerability
@@ -75,26 +76,50 @@ the regex expressions will be matched against the name of the vulnerability\n"""
                         required=False, default="")
     args = parser.parse_args()
 
-    # -- TODO: Add a check to see if the file exists -- #
 
     # -- TODO: Group theses two class in a single one -- #
 
-    if not args.config_file is None:
-        config = Config_YAML(args.input_files, args.config_file, args.output_file)
+    if args.config_file:
+        if not args.config_file.endswith('.yml'):
+            raise ValueError("The config file must be a .yml file")
+        
+        if not args.input_files:
+            raise ValueError("The input files must be provided when using a config")
+        elif not path.exists(args.input_files[0]):
+            raise IOError("The input file does not exist")
+        elif not args.input_files[0].endswith('.xml'):
+            raise ValueError("The input file must be a .xml file")
+        
+        if not args.output_file:
+            raise ValueError("The input files must be provided when using a config")
+        elif not args.output_file.endswith('.xlsx') and not args.output_file.endswith('.docx') and not args.output_file.endswith('.csv'):
+            raise ValueError("The output file must be a .xlsx, .docx or .csv file")
+        elif path.exists(args.output_file):
+            raise IOError("The output file already exists")
+        
+
+
+        config = Config_YAML(
+            args.input_files,
+            args.config_file,
+            args.output_file
+        )
     else:
-        config = Config(args.input_files, 
-                        args.output_file, 
-                        args.min_lvl, 
-                        args.format, 
-                        args.report_type, 
-                        args.template,
-                        args.networks_included,
-                        args.networks_excluded,
-                        args.regex_included,
-                        args.regex_excluded,
-                        args.cve_included,
-                        args.cve_excluded,
-                        args.danger_excluded)
+        config = Config(
+            args.input_files, 
+            args.output_file, 
+            args.min_lvl, 
+            args.format, 
+            args.report_type, 
+            args.template,
+            args.networks_included,
+            args.networks_excluded,
+            args.regex_included,
+            args.regex_excluded,
+            args.cve_included,
+            args.cve_excluded,
+            args.danger_excluded
+        )
 
     convert(config)
 
@@ -118,7 +143,7 @@ def convert(config:Config) -> None:
     threat_dict = Config.levels()
     config_allowed = list(threat_dict.values())
 
-    # Added a filtrer to not raise an error if a wrong threat type is detected
+    # Added a filter to not raise an error if a wrong threat type is detected
     for threat in config.threat_excluded:
         if td := threat_dict.get(threat, None):
             config_allowed.remove(td)

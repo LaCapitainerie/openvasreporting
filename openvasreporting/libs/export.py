@@ -301,7 +301,7 @@ def export_to_excel_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list
         ws_vuln.set_tab_color(Config.colors()[vuln.level.lower()])
 
         vuln.version = ""
-        if(match := (search(r'Installed version: ((\d|.)+)', vuln.hosts[0][1].result) or search(r'EOL version:( )+((\d|.)+)', vuln.hosts[0][1].result))): # type: ignore
+        if(match := (search(r'Installed version: ((\d|.)+)', vuln.hosts[0][1].result) or search(r'EOL version:( )+((\d|.)+)', vuln.hosts[0][1].result))):
             vuln.version = match.group(1)
 
         # --------------------
@@ -311,7 +311,7 @@ def export_to_excel_by_vuln(vuln_info:list[Vulnerability], threat_type_list:list
         ws_toc.write_url("C{}".format(i + 3), "internal:'{}'!A1".format(name), format_table_cells, string=vuln.name)
         ws_toc.write("D{}".format(i + 3), "{:.1f} ({})".format(vuln.cvss, vuln.level.capitalize()),
                      format_toc[vuln.level])
-        ws_toc.write("E{}".format(i + 3), "{}".format(', '.join([host.ip for host, _ in vuln.hosts])),
+        ws_toc.write("E{}".format(i + 3), "{}".format(', '.join({host.ip for host, _ in vuln.hosts})),
                      format_table_cells)
         ws_vuln.write_url("A1", "internal:'{}'!A{}".format(ws_toc.get_name(), i + 3), format_align_center,
                           string="<< TOC")

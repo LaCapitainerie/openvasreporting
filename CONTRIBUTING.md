@@ -3,7 +3,7 @@
 | -------- | ------- |
 | Packaging | <a href="#packaging">here</a> |
 | Input command | <a href="#input-command">here</a> |
-| External Support | $420 |
+| External Support | <a href="#external-support">here</a> |
 | Data parsing | |
 | Main Algorithm | |
 

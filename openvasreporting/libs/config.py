@@ -224,8 +224,7 @@ class Config(object):
             'high':     [Config.levels()['c'], Config.levels()['h']],
             'medium':   [Config.levels()['c'], Config.levels()['h'], Config.levels()['m']],
             'low':      [Config.levels()['c'], Config.levels()['h'], Config.levels()['m'], Config.levels()['l']],
-            'none':     [Config.levels()['c'], Config.levels()['h'], Config.levels()['m'], Config.levels()['l'],
-                         Config.levels()['n']]
+            'none':     [Config.levels()['c'], Config.levels()['h'], Config.levels()['m'], Config.levels()['l'], Config.levels()['n']]
         }
 
 #
@@ -236,14 +235,14 @@ class Config(object):
         for ip in lines:
             if ip == '':
                 continue
-            if '-' in ip:    # ip range?
+            if '-' in ip:
                 _start_ip, _end_ip = ip.split('-')
                 try:
                     ip_range = IPRange(_start_ip, _end_ip)
                     outlines.append(ip_range)
                 except AddrFormatError:
                     raise AddrFormatError("Expected valid ip range, got '{}'-'{}' instead".format(_start_ip, _end_ip))
-            else:            # ip or network cdir?
+            else:
                 try:
                     network = IPNetwork(ip)
                     outlines.append(network)
@@ -257,11 +256,11 @@ class Config(object):
 # into a list of re.compile(d) instances for later comparision when parsing and filtering
     def include_regex(self, lines) -> list[Pattern]:
         outlines = []
-        for regex_entry in lines:
-            try:
+        try:
+            for regex_entry in lines:
                 outlines.append(compile(regex_entry, IGNORECASE))
-            except error:
-                raise ValueError("Expected valid regex expression, got '{}' instead.".format(regex_entry))
+        except error:
+            raise ValueError("Expected valid regex expression, got '{}' instead.".format(regex_entry))
 
         return outlines
 

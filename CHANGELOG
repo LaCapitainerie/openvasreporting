@@ -1,6 +1,15 @@
 Changelog
 =========
 
+2.1.2
+
+- Features:
+       - Updated CONTRIBUTING.md
+       - Fixes differents Config Class
+
+- Fixes:
+       - Fixes doublon in host affected
+
 2.1.1
 
 - Features :
