@@ -58,3 +58,71 @@ Each type of files doesn't have the same way to export as some were forgot to be
 #### CSV
 
 Csv output are most tables that you can found on excel and word output, as their main goal is to pass data.
+
+## Data parsing
+
+**This part is about the file : `/openvasreporting/libs/parser.py`**
+
+As all the result in the XML don't have a uniform output, the main one that is used is this one, i use it so i know which data i have in every result.
+
+<result id="">
+    <name/>
+    <owner>
+        <name/>
+    </owner>
+    <modification_time/>
+    <comment/>
+    <creation_time/>
+    <detection>
+        <result id="">
+            <details>
+                <detail[]>
+                    <name/>
+                    <value/>
+                </detail>
+            </details>
+        </result>
+    </detection>
+    <host>
+        <asset asset_id=""/>
+        <hostname/>
+    </host>
+    <port/>
+    <nvt oid="">
+        <type/>
+        <name/>
+        <family/>
+        <cvss_base/>
+        <severities score="">
+            <severity type="">
+                <origin/>
+                <date/>
+                <score/>
+                <value/>
+            </severity>
+        </severities>
+        <tags/>
+        <solution type=""/>
+        <refs[]>
+            <ref type="" id=""/>
+        </refs>
+    </nvt>
+    <scan_nvt_version/>
+    <threat/>
+    <severity/>
+    <qod>
+        <value/>
+        <type/>
+    </qod>
+    <description/>
+    <original_threat/>
+    <original_severity/>
+</result>
+
+this i basically just parsing some data with `ET.parse`, not much work done here.
+
+## Main Algorithm
+
+**This part is about the file : `/openvasreporting/libs/export.py`**
+
+The main algorithm is about making some tables to store the data, first group them up by a filter (Vuln | Host), then take their properties (CVE, risk, version, ...) and finally, put them in a table with a loop that add them line by line.
